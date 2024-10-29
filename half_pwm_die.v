@@ -20,6 +20,9 @@ module half_pwm_die #(
 
     wire pulse_a_last;
     wire pulse_b_last;
+
+    wire pulseOut_a;
+    wire pulseOut_b;
     
  sigpulse #(
     ._RAM_WIDTH(_RAM_WIDTH)
@@ -41,7 +44,7 @@ module half_pwm_die #(
     .io_rst(io_rst),
     .io_en(die_pulse_a_last),
     .pwm_dis(pwm_dis),
-    .io_pulseOut(io_pulseOut_a),
+    .io_pulseOut(pulseOut_a),
     .io_pulseWidth(pulse_period),
     .io_defaultLevel(io_defaultLevel),
     .pulse_valid(pulse_a_last)
@@ -67,10 +70,13 @@ module half_pwm_die #(
     .io_rst(io_rst),
     .io_en(die_pulse_b_last),
     .pwm_dis(pwm_dis),
-    .io_pulseOut(io_pulseOut_b),
+    .io_pulseOut(pulseOut_b),
     .io_pulseWidth(pulse_period),
     .io_defaultLevel(io_defaultLevel),
     .pulse_valid(pulse_b_last)
   );
   assign pulse_valid = pulse_b_last ;
+  assign io_pulseOut_a = pulseOut_a & ~die_a_pulse;
+  assign io_pulseOut_b = pulseOut_b & ~pulseOut_a & ~die_b_pulse ;
+    
 endmodule
