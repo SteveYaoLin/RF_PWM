@@ -26,7 +26,7 @@ module sys_top # (parameter _RAM_WIDTH = 32)
     output io_pulseOut_b,
     output io_pulseOut_c,
     output io_pulseOut_d,
-    output [7:0] led,
+    output [5:0] led,
     input key
     );
 
@@ -43,7 +43,7 @@ module sys_top # (parameter _RAM_WIDTH = 32)
     wire pwm_dis;
     wire io_en;
     reg en_d1 = 0;
-    wire pulse_begin;
+    reg pulse_begin;
 
     wire pulse_valid;
 
@@ -53,24 +53,26 @@ module sys_top # (parameter _RAM_WIDTH = 32)
     .CLK_OUT1(io_clk),
     // .CLK_OUT2(clk_65m),
              
-    .RESET(~sys_rst_n), 
+    .RESET(~key), 
     .LOCKED(locked),
     .CLK_IN1(sys_clk)
     );
     //creted rst_n
-    always @(posedge sys_clk) begin
-        if(temp_cnt = 10000) begin
-            temp_cnt <= temp_cnt;
-        end
-        else begin
-        temp_cnt <= temp_cnt + 1'b1;
-        end
-    end
-    assign sys_rst_n = ((temp_cnt>50)|(temp_cnt<90)) ? 1'b0 : 1'b1;
+//    always @(posedge sys_clk) begin
+//        if(temp_cnt == 10000) begin
+//            temp_cnt <= temp_cnt;
+//        end
+//        else begin
+//        temp_cnt <= temp_cnt + 1'b1;
+//        end
+//    end
+//    assign sys_rst_n = ((temp_cnt>50)|(temp_cnt<90)) ? 1'b0 : 1'b1;
+//	 assign sys_rst_n = key;
     assign rst_n =  locked; 
 
-    assign led[0] = 1'b1;
-    assign led[1] = 1'b0;
+    assign led[5] = sys_rst_n;
+    assign led[4] = ~locked;
+	 assign led[3:0] = sig_led[7:4];
 
     assign io_en = ((temp_cnt>9980)|(temp_cnt<9990)&(locked==1'b1)) ? 1'b1 : 1'b0;
 
@@ -93,4 +95,26 @@ module sys_top # (parameter _RAM_WIDTH = 32)
     .pulse_valid(pulse_valid)
   );
   
+  
+	assign io_pulseOut_c = 0;
+	assign io_pulseOut_d = 0;
+	
+	assign die_period = 3;
+	assign pulse_period = 10;
+	
+	reg[24:0] counter = 0;//变量led_out 定义为寄存器型
+	reg[7:0] sig_led = 0;
+//assign led=8'b11111111;
+always@(posedge io_clk)
+begin
+    counter<=counter+1'b1;
+	if(counter==25'd25000000)
+	begin
+		sig_led<=sig_led<<1;// led 向左移位，空闲位自动添0 补位
+		counter<=0;//计数器清0
+		if(sig_led==8'b0000_0000)//每到时间临界点后,左移一位,一直到8位全部都变为0
+		sig_led<=8'b1111_1111;//重新赋值为全1,
+	end
+	
+end
 endmodule
