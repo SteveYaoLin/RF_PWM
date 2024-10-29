@@ -29,7 +29,7 @@ module tb_half_pulse ();
   ) uut (
     .io_clk(io_clk),
     .io_rst(io_rst),
-    .io_en(pulse_begin),
+    .io_en(pulse_begin|pulse_valid),
     .pwm_dis(pwm_dis),
     .io_pulseOut_a(io_pulseOut_a),
     .io_pulseOut_b(io_pulseOut_b),
