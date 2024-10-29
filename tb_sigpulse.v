@@ -51,12 +51,12 @@ module tb_sigpulse();
     pwm_dis =0;
     io_pulseWidth = 0;
     io_defaultLevel = 0;
-    #20; // 等待几个时钟周期以稳定信号
+    #200; // 等待几个时钟周期以稳定信号
     io_rst = 0; // 释放复位
     #20;
 
     // 设置PWM信号参数
-    io_defaultLevel = 1'b1; // 假设默认电平为低
+    io_defaultLevel = 1'b0; // 假设默认电平为低
     io_pulseWidth = PWM_PULSE_WIDTH / 10; // 根据宏定义设置滤波计数
     #10000;
     $display("ready!");
@@ -69,8 +69,8 @@ module tb_sigpulse();
     // io_en = 1;
     // 检查io_pulseOut是否正确
     start_sigpulse;
-    #2030 pwm_dis =1;
-    #100 pwm_dis =0;
+    // #2030 pwm_dis =1;
+    // #100 pwm_dis =0;
     $display("%t 2st abort!",$realtime);
     @(posedge pulse_valid)
       #500 start_sigpulse;
@@ -90,7 +90,7 @@ module tb_sigpulse();
     begin
       io_en = 1;
       #150; // 保持一段时间
-      // $display("pulus_access %t!",period/2);
+      $display("pulus_access !");
       io_en = 0;
       // #(period/2);
     end
