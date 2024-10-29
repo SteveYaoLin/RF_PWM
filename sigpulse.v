@@ -27,7 +27,7 @@ module sigpulse #(
   reg [_RAM_WIDTH - 1:0] cnt_pulseWidth = 0;
   // reg en_d1;
   always @ (posedge io_clk or posedge io_rst) begin
-    if(io_rst)begin
+    if(io_rst | pwm_dis)begin
       // cnt_delay <= 0;
       cnt_pulseWidth <= 0;
     end
@@ -35,9 +35,9 @@ module sigpulse #(
       // cnt_delay <= io_trigDelay;
       cnt_pulseWidth <= io_pulseWidth;
     end
-    else if (pwm_dis) begin
-      cnt_pulseWidth <= 0;
-    end
+    // else if (pwm_dis) begin
+    //   cnt_pulseWidth <= 0;
+    // end
     else begin
       // cnt_delay <= |cnt_delay ? cnt_delay - 1'd1:cnt_delay;
       cnt_pulseWidth <= |cnt_pulseWidth ? cnt_pulseWidth - 1'd1 : cnt_pulseWidth;

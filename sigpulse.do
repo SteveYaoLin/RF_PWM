@@ -10,5 +10,5 @@ vsim -c -l vsim.log +define+questasim -voptargs=+acc -fsmdebug work.tb_half_puls
 add wave -r *
 
 # 1. 在运行 DO 文件后直接进行 2ms 的仿真
-run 2ms
+run 100us
 

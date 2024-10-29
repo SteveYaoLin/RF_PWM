@@ -61,9 +61,12 @@ module tb_half_pulse ();
     io_rst = 0; // 释放复位
     #20;        
     start_sigpulse;
+    
+    #9994 ;
     @(posedge pulse_valid)
-    #1000 start_sigpulse;
-      
+    pwm_dis =1;
+    # clock_period ;
+    pwm_dis =0 ;
     
 
   end
