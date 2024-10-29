@@ -45,30 +45,33 @@ module sigpulse #(
   end
 
   
-  reg p_valid;
-  reg [_RAM_WIDTH - 1:0] cnt_pulseWidth_d1;
-  always @ (posedge io_clk) begin
-    // en_d1 <= io_en;
-    cnt_pulseWidth_d1 <= cnt_pulseWidth;
-  end
-  always @(posedge io_clk or posedge io_rst) begin
-    if (io_rst == 1) begin
-      p_valid <= 0;
-    end
-    else if ((cnt_pulseWidth == 0)&&(cnt_pulseWidth_d1 == 1)) begin
-      p_valid <= 1'b1;
-    end
-    else if (pwm_dis) begin
-      p_valid <= 1'b1;
-    end
-    else if (p_valid) begin
-      p_valid <= 0;
-    end
-    else begin
-      p_valid <= 0;
-    end
-  end
-  assign pulse_valid = p_valid ;
+  // reg p_valid;
+  // reg [_RAM_WIDTH - 1:0] cnt_pulseWidth_d1;
+  // always @ (posedge io_clk) begin
+  //   // en_d1 <= io_en;
+  //   cnt_pulseWidth_d1 <= cnt_pulseWidth;
+  // end
+  // always @(posedge io_clk or posedge io_rst) begin
+  //   if (io_rst == 1) begin
+  //     p_valid <= 0;
+  //   end
+  //   // else if ((cnt_pulseWidth == 0)&&(cnt_pulseWidth_d1 == 1)) begin
+  //   else if (cnt_pulseWidth == 1) begin
+  //     p_valid <= 1'b1;
+  //   end
+  //   else if (pwm_dis) begin
+  //     p_valid <= 1'b1;
+  //   end
+  //   else if (p_valid) begin
+  //     p_valid <= 0;
+  //   end
+  //   else begin
+  //     p_valid <= 0;
+  //   end
+  // end
+  // assign pulse_valid = p_valid ;
+  
+  assign pulse_valid = (cnt_pulseWidth == 1)? 1'b1 : 1'b0; 
   assign io_pulseOut = (~(cnt_pulseWidth == 0) ^ io_defaultLevel)&(~pwm_dis);
   // assign io_delayOut = (cnt_delay == 0) & delay_d;
 
