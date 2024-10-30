@@ -15,6 +15,16 @@ NET "io_pulseOut_b" IOSTANDARD = LVCMOS33;
 NET "io_pulseOut_c" IOSTANDARD = LVCMOS33;
 NET "io_pulseOut_d" IOSTANDARD = LVCMOS33;
 
+# 设置驱动强度
+NET "io_pulseOut_a" DRIVE = 16;
+# 设置驱动强度
+NET "io_pulseOut_b" DRIVE = 16;
+# 设置驱动强度
+NET "io_pulseOut_c" DRIVE = 16;
+# 设置驱动强度
+NET "io_pulseOut_d" DRIVE = 16;
+
+
 #NET "led[7]" LOC = P81;
 #NET "led[6]" LOC = P82;
 NET "led[5]" LOC = P75;
@@ -28,7 +38,6 @@ NET "led[0]" LOC = P56;
 NET "sys_clk" TNM_NET = "sys_clk";
 TIMESPEC TS_sys_clk = PERIOD "sys_clk" 20 ns HIGH 50 %;
 OFFSET = IN 20 ns VALID 20 ns BEFORE "sys_clk";
-# PlanAhead Generated IO constraints 
 
 NET "led[5]" IOSTANDARD = LVCMOS33;
 NET "led[4]" IOSTANDARD = LVCMOS33;
@@ -36,3 +45,11 @@ NET "led[3]" IOSTANDARD = LVCMOS33;
 NET "led[2]" IOSTANDARD = LVCMOS33;
 NET "led[1]" IOSTANDARD = LVCMOS33;
 NET "led[0]" IOSTANDARD = LVCMOS33;
+
+
+# PlanAhead Generated IO constraints 
+
+NET "io_pulseOut_a" SLEW = FAST;
+NET "io_pulseOut_b" SLEW = FAST;
+NET "io_pulseOut_d" SLEW = FAST;
+NET "io_pulseOut_c" SLEW = FAST;
